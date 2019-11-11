@@ -12,7 +12,6 @@ public class Powder : MonoBehaviour
     //serialize param
     [SerializeField] Type type_;
     [SerializeField] GameObject instantiatePositionObject_;
-    [SerializeField] ParticleSystem effect_;
     //private param
     IEnumerator[] routines;
     const int c_RoutineCount = 5;
@@ -43,7 +42,6 @@ public class Powder : MonoBehaviour
             {
                 if (routines[i] != null) { continue; }
                 routines[i] = MainRoutine();
-                Debug.LogError("endf funvc:" + i);
                 int index = i;
                 this.StartCoroutine(routines[i], () => { ResetRoutine(index); });
             }
@@ -70,14 +68,15 @@ public class Powder : MonoBehaviour
 
     IEnumerator MainRoutine()
     {
-        var effect = PowderPool.Instance.GetObject().GetComponent<ParticleSystem>();
-        effect.gameObject.transform.parent = instantiatePositionObject_.transform;
-        effect.gameObject.transform.position = instantiatePositionObject_.transform.position;
-        effect.transform.localScale = Vector3.one;
-        effect.Play();
-        yield return new WaitWhile(() => effect.IsAlive(true));
-        effect.transform.parent = PowderPool.Instance.gameObject.transform;
-        effect.gameObject.SetActive(false);
+        //var effect = PowderPool.Instance.GetObject().GetComponent<ParticleSystem>();
+        //effect.gameObject.transform.parent = instantiatePositionObject_.transform;
+        //effect.gameObject.transform.position = instantiatePositionObject_.transform.position;
+        //effect.transform.localScale = Vector3.one;
+        //effect.Play();
+        //yield return new WaitWhile(() => effect.IsAlive(true));
+        //effect.transform.parent = PowderPool.Instance.gameObject.transform;
+        //effect.gameObject.SetActive(false);
+        yield break;
     }
 
     void ResetRoutine(int index)
