@@ -7,11 +7,13 @@ public class Powder : MonoBehaviour
     public enum Type : uint
     {
         Sugar = 0,
-        BlackSuger
+        BlackSuger,
+        Salt,
     }
     //serialize param
     [SerializeField] Type type_;
-    [SerializeField] GameObject instantiatePositionObject_;
+    [SerializeField,Tooltip("発生したエフェクトの親オブジェクト")] GameObject instantiatePositionObject_;
+    [SerializeField,Tooltip("当たり判定を持たせた空のオブジェクトのプレハブ")] GameObject hitEmptyObjectPrefab;
     //private param
     IEnumerator[] routines;
     const int c_RoutineCount = 5;
@@ -28,6 +30,7 @@ public class Powder : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //毎フレ判定するお！
         Shake();
     }
 
@@ -68,14 +71,30 @@ public class Powder : MonoBehaviour
 
     IEnumerator MainRoutine()
     {
-        //var effect = PowderPool.Instance.GetObject().GetComponent<ParticleSystem>();
-        //effect.gameObject.transform.parent = instantiatePositionObject_.transform;
-        //effect.gameObject.transform.position = instantiatePositionObject_.transform.position;
-        //effect.transform.localScale = Vector3.one;
-        //effect.Play();
-        //yield return new WaitWhile(() => effect.IsAlive(true));
-        //effect.transform.parent = PowderPool.Instance.gameObject.transform;
-        //effect.gameObject.SetActive(false);
+        //エフェクトの生成と再生タイミング
+
+        //エフェクト
+        var effect = PowderPool.Instance.GetObject().GetComponent<ParticleSystem>();
+        {
+            effect.gameObject.transform.parent = instantiatePositionObject_.transform;
+            effect.gameObject.transform.position = instantiatePositionObject_.transform.position;
+            effect.transform.localScale = Vector3.one;
+            effect.Play();
+        }
+        //当たり判定を確認するための空オブジェクト
+        {
+            var hitObj = Instantiate(hitEmptyObjectPrefab);
+            hitObj.transform.parent = instantiatePositionObject_.transform;
+            hitObj.transform.localPosition = Vector3.zero;
+            var mover = hitObj.GetComponent<GameObjectMover>();
+            mover.Execute(Vector3.down);
+        }
+
+
+        yield return new WaitWhile(() => effect.IsAlive(true));
+        //エフェクトの再生終了時
+        effect.transform.parent = PowderPool.Instance.gameObject.transform;
+        effect.gameObject.SetActive(false);
         yield break;
     }
 
