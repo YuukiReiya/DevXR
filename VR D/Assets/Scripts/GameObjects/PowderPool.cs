@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PowderPool : SingletonObjectPool<PowderPool>
+using API;
+public class PowderPool : ObjectPoolBase
 {
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         Setup();
     }
 

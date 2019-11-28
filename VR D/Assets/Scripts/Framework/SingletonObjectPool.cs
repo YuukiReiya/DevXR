@@ -83,12 +83,12 @@ public class SingletonObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     /// 子オブジェクトの全取得
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    protected virtual void GetAllChild<T>() where T : MonoBehaviour
+    protected virtual void GetAllChild<Type>() where Type : MonoBehaviour
     {
         foreach (Transform it in transform)
         {
-            T obj;
-            if (!it.TryGetComponent<T>(out obj)) { continue; }
+            Type obj;
+            if (!it.TryGetComponent<Type>(out obj)) { continue; }
             poolList.Add(obj.gameObject);
         }
     }
