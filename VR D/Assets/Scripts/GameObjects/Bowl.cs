@@ -8,8 +8,6 @@ namespace Game
 {
     public class Bowl : MonoBehaviour
     {
-        [SerializeField]
-
         /// <summary>
         /// 投入物のIDを格納
         /// 例)砂糖、黒糖.etc)
@@ -36,6 +34,7 @@ namespace Game
         }
         [SerializeField]private ColorVariation colorVariation;
 
+        #region TODO:コードのリファクタリング
         //bit,color
         int[] c_Bits =
         {
@@ -53,8 +52,45 @@ namespace Game
         /// やること
         //////////////////////////////////////////
         //contentsの判定が汚い
+        #endregion
 
+        [System.Serializable]
+        struct MixParam
+        {
+            //座標はXZ平面(x:x,y:z)
 
+            /// <summary>
+            /// かき混ぜる対象のオブジェクト
+            /// ※水面のオブジェクトをあてる
+            /// </summary>
+            public GameObject planeObj;
+
+            /// <summary>
+            /// ミキサーの開始位置
+            /// </summary>
+            public Vector2 startPos;
+
+            /// <summary>
+            /// ミキサーの1回転終了を判定する位置
+            /// </summary>
+            public Vector2 endPos;
+
+            /// <summary>
+            /// 中心位置から判定する距離
+            /// </summary>
+            public float length;
+
+            /// <summary>
+            /// 混ぜた回数
+            /// </summary>
+            public uint mixCount;
+
+            /// <summary>
+            /// 移動距離の保存
+            /// </summary>
+            public float saveMoveDistance;
+        }
+        [SerializeField] MixParam mixParam;
         private void Awake()
         {
             contentsID = new HashSet<Define.ContentsType>();
@@ -94,22 +130,26 @@ namespace Game
 
         private void OnTriggerEnter(Collider other)
         {
+            #region 素材投入処理
             IContent content;
             var contentParent = other.transform.parent.parent;
 
-
             //判定は厳しめにとっておく
-            if (contentParent == null) { return; }//対象外のものが触れた
             //※当たり判定をするオブジェクトはコライダーのオブジェクトの親の親(ThrowContentのMainRoutine参照)
+            //素材以外なら無視
+            if (
+                contentParent != null
+                &&
+                contentParent.TryGetComponent(out content)
+                )
+            {
+                //素材投入処理
+                ThrowIn(content);
 
-            //素材以外なら抜ける
-            if (!contentParent.TryGetComponent(out content)) { return; }
-
-            //素材投入処理
-            ThrowIn(content);
-
-            //当たり判定のオブジェクトを破棄
-            Destroy(other.gameObject);
+                //当たり判定のオブジェクトを破棄
+                Destroy(other.gameObject);
+            }
+            #endregion
         }
 
         void ChangeWaterColor()
