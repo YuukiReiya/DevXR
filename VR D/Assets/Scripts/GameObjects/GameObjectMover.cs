@@ -16,7 +16,6 @@ public class GameObjectMover : MonoBehaviour
     {
         while(true)
         {
-            Debug.Log("n:" + nDir);
             transform.position += nDir * speed * Time.deltaTime;
             yield return null;
         }

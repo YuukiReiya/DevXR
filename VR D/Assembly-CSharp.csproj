@@ -364,11 +364,14 @@
     <Compile Include="Assets\Scripts\Framework\SingletonMonoBehaviour.cs" />
     <Compile Include="Assets\Scripts\Framework\SingletonObjectPool.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Bowl.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\BowlContent.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\FrypanContent.cs" />
     <Compile Include="Assets\Scripts\GameObjects\GameObjectMover.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Mixer.cs" />
     <Compile Include="Assets\Scripts\GameObjects\Powder.cs" />
     <Compile Include="Assets\Scripts\GameObjects\PowderPool.cs" />
     <Compile Include="Assets\Scripts\GameObjects\PowderThrowObjectDestroyArea.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\ThrowBowlContents.cs" />
     <Compile Include="Assets\Scripts\GameObjects\ThrowContent.cs" />
     <Compile Include="Assets\Scripts\GameObjects\TriggerObjectDestroyArea.cs" />
     <Compile Include="Assets\Scripts\Interface\IContent.cs" />
