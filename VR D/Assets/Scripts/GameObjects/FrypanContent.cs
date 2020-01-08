@@ -8,16 +8,13 @@ namespace Game
     {
         public HashSet<Define.ContentsType> contentsID;
         [SerializeField] GameObject contentMesh;
+        [SerializeField] MeshRenderer contentMeshRenderer;
+        [SerializeField] Material bakeMat;
+        [SerializeField] ContentsTurnOver contentsTurnOver;
         // Start is called before the first frame update
         void Start()
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
+            contentsTurnOver.func = () => { contentMeshRenderer.material = bakeMat; };
         }
 
         private void OnTriggerEnter(Collider other)
@@ -27,7 +24,12 @@ namespace Game
             //Debug.Log(":" + other.name);
 
             ThrowBowlContents content = null;
-            var contentParent = other.transform.parent.parent;
+
+            //var contentParent = other.transform.parent.parent;
+            //TODO:テスト必要かも。。。
+            var contentParent = other.transform.parent != null ? other.transform.parent.parent : null;
+
+
             //判定は厳しめにとっておく
             //※当たり判定をするオブジェクトはコライダーのオブジェクトの親の親(ThrowContentのMainRoutine参照)
             //素材以外なら無視
