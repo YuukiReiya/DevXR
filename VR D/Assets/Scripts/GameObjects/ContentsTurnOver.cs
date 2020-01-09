@@ -40,7 +40,7 @@ namespace Game
 
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.LogError("フライ返し");
+            //Debug.LogError("フライ返し");
             Execute();
         }
 
